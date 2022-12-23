@@ -92,17 +92,38 @@ for (let i=0 ; i < informazioniGlobali.length ; i++){
             <span class="like-button__label">Mi Piace</span>
           </button>
         </div>
-        <div class="likes__counter">Piace a <b id="like-counter-1" class="js-likes-counter"></b>${informazioniGlobali[i].likes} persone</div>
+        <div class="likes__counter">Piace a <b id="like-counter-${i}" class="js-likes-counter">${informazioniGlobali[i].likes} </b>persone</div>
       </div>
     </div>
   </div>`
-//se non ha la foto profilo bisogna inserire le iniziali sotto forma di span
+
+  
+    //se non ha la foto profilo bisogna inserire le iniziali sotto forma di span
     if (!informazioniGlobali[i].fotoAutore){
         //targhettizzo l'immagine profilo
         const profilo = document.querySelector(` #id${informazioniGlobali[i].idPost } .post-meta__icon`)
         console.log(profilo)
         profilo.innerHTML = `<span class="profile-pic-default"> ${hasPhotoProfile(informazioniGlobali[i])}</span>`
     }
+
+
+    //aggiungo l'azione del bottone per i like
+   
+   
+    //seleziono il bottone
+    let btn= document.querySelector(`#id${informazioniGlobali[i].idPost } button`)
+    console.log(btn)
+    btn.addEventListener("click", function(){
+    //faccio diventare il testo blu 
+    btn.classList.toggle("like-button--liked");
+    //aumento il numero di likes
+    //seleziono il testo 
+    //uso una variabile di appoggio 
+    let variabile = informazioniGlobali[i].likes + 1;
+    document.getElementById(`like-counter-${i}`).innerText = variabile
+
+    });
+
 
 };
 
