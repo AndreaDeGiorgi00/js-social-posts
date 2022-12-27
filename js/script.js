@@ -29,7 +29,7 @@ const informazioniGlobali = [
     {
         idPost : 2 ,
         nomeAutore: "Giulia Rossi" ,
-        fotoAutore : "https://picsum.photos/200" ,
+        fotoAutore : false ,
         dataAmericana: "04/11/2022" ,
         testo: "al mare con le mie migliori amiche" ,
         immagine : false ,
@@ -54,8 +54,10 @@ const informazioniGlobali = [
         likes : 90
     },
 ]
-
-
+//creo una funzione per capire se è presente una foto
+const hasPhoto = (x) => x.immagine ? x.immagine : "";
+//creo array per immagazzinare i likes
+let arrayLikes = [];
 //creazione dei post
 //targhettizzo il contenitore
 
@@ -70,7 +72,7 @@ for (let i=0 ; i < informazioniGlobali.length ; i++){
     <div class="post__header">
       <div class="post-meta">
         <div class="post-meta__icon">
-          <img class="profile-pic" src="${informazioniGlobali[i].fotoAutore}" alt="Phil Mangione" />
+          <img class="profile-pic" src="${ controlloPresenzaImmagine = informazioniGlobali[i].fotoAutore ? hasPhotoProfile(informazioniGlobali[i]) : ""} " />
         </div>
         <div class="post-meta__data">
           <div class="post-meta__author">${informazioniGlobali[i].nomeAutore}</div>
@@ -87,7 +89,7 @@ for (let i=0 ; i < informazioniGlobali.length ; i++){
     <div class="post__footer">
       <div class="likes js-likes">
         <div class="likes__cta">
-          <button class="like-button js-like-button" href="#" data-postid="1">
+          <button class="like-button js-like-button button"  >
             <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
             <span class="like-button__label">Mi Piace</span>
           </button>
@@ -95,56 +97,60 @@ for (let i=0 ; i < informazioniGlobali.length ; i++){
         <div class="likes__counter">Piace a <b id="like-counter-${i}" class="js-likes-counter">${informazioniGlobali[i].likes} </b>persone</div>
       </div>
     </div>
+
   </div>`
 
   
     //se non ha la foto profilo bisogna inserire le iniziali sotto forma di span
     if (!informazioniGlobali[i].fotoAutore){
         //targhettizzo l'immagine profilo
-        const profilo = document.querySelector(` #id${informazioniGlobali[i].idPost } .post-meta__icon`)
+        const profilo = document.querySelector(`#id${informazioniGlobali[i].idPost } .post-meta__icon`)
         console.log(profilo)
         profilo.innerHTML = `<span class="profile-pic-default"> ${hasPhotoProfile(informazioniGlobali[i])}</span>`
     }
-
-
-    //aggiungo l'azione del bottone per i like
-   
-   
-    //seleziono il bottone
-    let btn= document.querySelector(`#id${informazioniGlobali[i].idPost } button`)
-    console.log(btn)
-    btn.addEventListener("click", function(){
-    //faccio diventare il testo blu 
-    btn.classList.toggle("like-button--liked");
-    //aumento il numero di likes
-    //seleziono il testo 
-    //uso una variabile di appoggio 
-    let variabile = informazioniGlobali[i].likes + 1;
-    document.getElementById(`like-counter-${i}`).innerText = variabile
-
-    });
-
-
+            
 };
 
 
-//creo delle funzioni per capire se il post ha la immagine e la foto autore
 
-function hasPhoto (x){//dove x è l'oggetto
-    return x.immagine ? x.immagine : ""
+//aggiungo l'azione del bottone per i like
+//seleziono il bottone
+let btn = document.querySelectorAll(".button.like-button.js-like-button");
+
+for(let i = 0 ; i < btn.length ; i++){
+    btn[i].addEventListener("click", function(){
+        //faccio diventare il testo blu 
+        btn[i].classList.toggle("like-button--liked");
+        
+        //aumento il numero di likes
+        //seleziono il testo 
+        //uso una variabile di appoggio 
+        let variabile = informazioniGlobali[i].likes + 1;
+        if (document.getElementById(`like-counter-${i}`).innerText == informazioniGlobali[i].likes){
+            console.log(document.getElementById(`like-counter-${i}`).innerText)
+            document.getElementById(`like-counter-${i}`).innerText = variabile
+        }else{
+    
+            //nel caso che variabile sia diverso dal valore di likes iniziali rinizializza il valore
+            document.getElementById(`like-counter-${i}`).innerText = informazioniGlobali[i].likes;
+        }
+    });
     
 }
+
+//creo delle funzioni per capire se il post ha la immagine e la foto autore
+//dove x è l'oggetto
+
 
 function hasPhotoProfile(x){
     //voglio che mi returni o la foto o le iniziali del nome
     let nomeCognome = x.nomeAutore;
     if (x.fotoAutore){
-        return nomeCognome
+        return x.fotoAutore
     }else{
         //faccio in modo di ottenere le iniziali
         //metto in un array il nomecognome
         let appoggio = [...x.nomeAutore]
-        
         //creo una variabile per le inziali
         let iniziali = "";
         //seleziono le iniziali
@@ -166,3 +172,9 @@ function hasPhotoProfile(x){
 }
 
 hasPhotoProfile(informazioniGlobali[1]);
+
+//creo una funzione per capire l'indice dei likes dalla array
+
+function indicelike(x){
+
+}
